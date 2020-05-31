@@ -15,7 +15,7 @@ body{
     font-weight: bolder;
 }
 
-#tune-select{
+#tune-select, #oscillator-select{
     padding: 10px;
     border-radius: 20px;
     font-family: 'Rubik', sans-serif;
@@ -50,4 +50,11 @@ option{
 
 .tuner-button:hover{
     opacity: 0.7;
+}
+
+.chord{
+    width: 25%;
+    padding: 10px;
+    /* margin: 10px; */
+
 }

@@ -3,6 +3,8 @@
     <title>Guitar Tuner</title>
     <link rel="stylesheet" href="tuner.css">
     <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
 </head>
 <body>
 
@@ -18,12 +20,12 @@
     // var string5 = 59;
     // var string6 = 64;
 
-    var string1 = 28;
-    var string2 = 33;
-    var string3 = 38;
-    var string4 = 43;
-    var string5 = 47;
-    var string6 = 52;
+    var string1 = 40;
+    var string2 = 45;
+    var string3 = 50;
+    var string4 = 55;
+    var string5 = 59;
+    var string6 = 64;
 
     var string1FQ = 164.8;
     var string2FQ = 220.0;
@@ -32,20 +34,30 @@
     var string5FQ = 493.9;
     var string6FQ = 659.3;
 
+    //Synthesiser defaults
     var useSynthesiser = false;
+    var oscillatorType = "sine";
 </script>
 
 <div class="container margin-top-50">
     <div class="row tuner-title">
         <div class="col-xs-12">
             <h1>Guitar Tuner</h1>
+        </div>
+        <div class="row tuner-title">
+            <label class="switch">
+                <input type="checkbox" onchange="toggleSynthesiser();">
+                <span class="slider round">Use Synthesiser</span>
+            </label>
+        </div>
+        <div class="row tuner-title">
             <button id="string1" class="tuner-button" onclick="playNote(string1);">E</button>
             <button id="string2" class="tuner-button"  onclick="playNote(string2);">A</button>
             <button id="string3" class="tuner-button"  onclick="playNote(string3);">D</button>
             <button id="string4" class="tuner-button"  onclick="playNote(string4);">G</button>
             <button id="string5" class="tuner-button"  onclick="playNote(string5);">B</button>
             <button id="string6" class="tuner-button"  onclick="playNote(string6);">E</button>
-            <button id="strum" class="tuner-button"  onclick="strumTuning();">*</button>
+            <!-- <button id="strum" class="tuner-button"  onclick="strumTuning();">*</button> -->
 
         </div>
     </div>
@@ -55,27 +67,37 @@
             <option value="drop-d">         Drop D | D A D G B E</option>
             <option value="drop-c">         Drop C | C G C F A D</option>
             <option value="half-step-down"> Half Step Down | Eb Ab Db Gb Bb Eb</option>
-            <option value="open-c">         Open C | C G C G C E</option>
+            <!-- <option value="open-c">         Open C | C G C G C E</option> -->
         </select>
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider round">Loop</span>
+        </label>
     </div>
     <div class="row">
-        <p>
-            The guitar samples used in this tuner are just....not accurate, please
-            don't use them for pitch perfect accuracy!
-        </p>
+        <select id="oscillator-select" onchange="changeOscillatorType()">
+            <option value="sine">Sine</option>
+            <option value="square">Square</option>
+            <option value="triangle">Triangle</option>
+            <option value="sawtooth">Sawtooth</option>
+        </select>
     </div>
-    <div class="row tuner-chords">
-        <h1>Chords</h1>
-        <button class="chord" onclick="playChord(28, 35, 40, 44, 47, 52)">E Major</button>
-        <button class="chord" onclick="playChord(28, 35, 40, 43, 47, 52)">E Minor</button>
-        <button class="chord" onclick="playChord(0, 33, 40, 45, 49, 52)">A Major</button>
-        <button class="chord" onclick="playChord(0, 33, 40, 45, 48, 52)">A Minor</button>
-        <button class="chord" onclick="playChord(0, 0, 38, 45, 49, 54)">D Major</button>
-        <button class="chord" onclick="playChord(0, 0, 38, 45, 49, 53)">D Minor</button>
-
-
-        <button class="chord" onclick="playChord(30, 37, 42, 46, 49, 54)">F Major</button>
-        <button class="chord" onclick="playChord(29, 36, 41, 45, 48, 53)">F Minor</button>
+    <div class="tuner-chords">
+        <div class="row">
+            <h1>Chords</h1>
+        </div>
+        <div class="row">
+            <button class="chord" onclick="playChord(40, 47, 52, 56, 59, 64)">E | 022100</button>
+            <button class="chord" onclick="playChord(40, 47, 52, 55, 59, 64)">Em | 022000</button>
+            <button class="chord" onclick="playChord(0, 45, 52, 57, 61, 64)">A | x02220</button>
+            <button class="chord" onclick="playChord(0, 45, 52, 56, 61, 64)">Am | x022100</button>
+        </div>
+        <div class="row">
+            <button class="chord" onclick="playChord(0, 0, 50, 57, 61, 66)">D | xx0232</button>
+            <button class="chord" onclick="playChord(0, 0, 50, 57, 61, 65)">Dm | xx0231</button>
+            <button class="chord" onclick="playChord(42, 49, 54, 58, 61, 66)">F | 244322</button>
+            <button class="chord" onclick="playChord(41, 48, 53, 56, 60, 65)">Fm | 133111</button>
+        </div>
 
 
     </div>
@@ -87,17 +109,32 @@
 <script>
 
 //Synthesiser stuff
-// var context = new AudioContext()
-// function playSound(frequency){
-//     var oscillator = context.createOscillator()
-//     var gain = context.createGain()
-//     oscillator.frequency.value = frequency
-//     oscillator.type = 'triangle';
-//     oscillator.connect(gain)
-//     gain.connect(context.destination)
-//     oscillator.start(0)
-//     gain.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 3.5)
-// }
+var context = new AudioContext();
+
+function playSound(frequency){
+    var oscillator = context.createOscillator()
+    var gain = context.createGain()
+    oscillator.type = oscillatorType;
+    oscillator.frequency.value = frequency;
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    oscillator.start(0);
+    gain.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 3.5);
+}
+
+function changeOscillatorType(){
+    console.log("I am aI being called" + document.getElementById("oscillator-select").value);
+    oscillatorType = document.getElementById("oscillator-select").value;
+}
+
+function toggleSynthesiser(){
+    if(useSynthesiser == false){
+        useSynthesiser = true;
+    } else {
+        useSynthesiser = false;
+    }
+    console.log("Synthesiser being used: " + useSynthesiser);
+}
 
 function playChord(first, second, third, fourth, fifth, sixth){
     playNote(first);
@@ -119,178 +156,136 @@ function strumTuning(){
 
 
 function playNote(note){
-    stopNote();
-    switch(note){
-        case 24:
-            C1.play();
-            break;
-        case 25:
-            C1sharp.play();
-            break;
-        case 26:
-            D1.play();
-            break;
-        case 27:
-            D1sharp.play();
-            break;
-        case 28:
-            E1.play();
-            break;
-        case 29:
-            F1.play();
-            break;
-        case 30:
-            F1sharp.play();
-            break;
-        case 31:
-            G1.play();
-            break;
-        case 32:
-            G1sharp.play();
-            break;
-        case 33:
-            A1.play();
-            break;
-        case 34:
-            A1sharp.play();
-            break;
-        case 35:
-            B1.play();
-            break;
-        case 36:
-            C2.play();
-            break;
-        case 37:
-            C2sharp.play();
-            break;
-        case 38:
-            D2.play();
-            break;
-        case 39:
-            D2sharp.play();
-            break;
-        case 40:
-            E2.play();
-            break;
-        case 41:
-            F2.play();
-            break;
-        case 42:
-            F2sharp.play();
-            break;
-        case 43:
-            G2.play();
-            break;
-        case 44:
-            G2sharp.play();
-            break;
-        case 45:
-            A2.play();
-            break;
-        case 46:
-            A2sharp.play();
-            break;
-        case 47:
-            B2.play();
-            break;
-        case 48:
-            C3.play();
-            break;
-        case 49:
-            C3sharp.play();
-            break;
-        case 50:
-            D3.play();
-            break;
-        case 51:
-            D3sharp.play();
-            break;
-        case 52:
-            E3.play();
-            break;
-        case 53:
-            F3.play();
-            break;
-        case 54:
-            F3sharp.play();
-            break;
-        case 55:
-            G3.play();
-            break;
-        case 56:
-            G3sharp.play();
-            break;
-        case 57:
-            A3.play();
-            break;
-        case 58:
-            A3sharp.play();
-            break;
-        case 59:
-            B3.play();
-            break;
-        case 60:
-            C4.play();
-            break;
-        case 61:
-            C4sharp.play();
-            break;
-        case 62:
-            D4.play();
-            break;
-        case 63:
-            D4sharp.play();
-            break;
-        case 64:
-            E4.play();
-            break;
+
+    if(useSynthesiser == true){
+        playSound(getFrequencyFromNote(note));
+    } else {
+        switch(note){
+            case 24:
+                C1.play();
+                break;
+            case 25:
+                C1sharp.play();
+                break;
+            case 26:
+                D1.play();
+                break;
+            case 27:
+                D1sharp.play();
+                break;
+            case 28:
+                E1.play();
+                break;
+            case 29:
+                F1.play();
+                break;
+            case 30:
+                F1sharp.play();
+                break;
+            case 31:
+                G1.play();
+                break;
+            case 32:
+                G1sharp.play();
+                break;
+            case 33:
+                A1.play();
+                break;
+            case 34:
+                A1sharp.play();
+                break;
+            case 35:
+                B1.play();
+                break;
+            case 36:
+                C2.play();
+                break;
+            case 37:
+                C2sharp.play();
+                break;
+            case 38:
+                D2.play();
+                break;
+            case 39:
+                D2sharp.play();
+                break;
+            case 40:
+                E2.play();
+                break;
+            case 41:
+                F2.play();
+                break;
+            case 42:
+                F2sharp.play();
+                break;
+            case 43:
+                G2.play();
+                break;
+            case 44:
+                G2sharp.play();
+                break;
+            case 45:
+                A2.play();
+                break;
+            case 46:
+                A2sharp.play();
+                break;
+            case 47:
+                B2.play();
+                break;
+            case 48:
+                C3.play();
+                break;
+            case 49:
+                C3sharp.play();
+                break;
+            case 50:
+                D3.play();
+                break;
+            case 51:
+                D3sharp.play();
+                break;
+            case 52:
+                E3.play();
+                break;
+            case 53:
+                F3.play();
+                break;
+            case 54:
+                F3sharp.play();
+                break;
+            case 55:
+                G3.play();
+                break;
+            case 56:
+                G3sharp.play();
+                break;
+            case 57:
+                A3.play();
+                break;
+            case 58:
+                A3sharp.play();
+                break;
+            case 59:
+                B3.play();
+                break;
+            case 60:
+                C4.play();
+                break;
+            case 61:
+                C4sharp.play();
+                break;
+            case 62:
+                D4.play();
+                break;
+            case 63:
+                D4sharp.play();
+                break;
+            case 64:
+                E4.play();
+                break;
+        }
     }
-}
-
-
-function stopNote(){
-    C1.stop = true;
-    C1sharp.stop = true;
-    D1.stop = true;
-    D1sharp.stop = true;
-    E1.stop = true;
-    F1.stop = true;
-    F1sharp.stop = true;
-    G1.stop = true;
-    G1sharp.stop = true;
-    A1.stop = true;
-    A1sharp.stop = true;
-    B1.stop = true;
-    C2.stop = true;
-    C2sharp.stop = true;
-    D2.stop = true;
-    D2sharp.stop = true;
-    E2.stop = true;
-    F2.stop = true;
-    F2sharp.stop = true;
-    G2.stop = true;
-    G2sharp.stop = true;
-    A2.stop = true;
-    A2sharp.stop = true;
-    B2.stop = true;
-    C3.stop = true;
-    C3sharp.stop = true;
-    D3.stop = true;
-    D3sharp.stop = true;
-    E3.stop = true;
-    F3.stop = true;
-    F3sharp.stop = true;
-    G3.stop = true;
-    G3sharp.stop = true;
-    A3.stop = true;
-    A3sharp.stop = true;
-    B3.stop = true;
-    C4.stop = true;
-    C4sharp.stop = true;
-    D4.stop = true;
-    D4sharp.stop = true;
-    E4.stop = true;
-
 }
 
 </script>
