@@ -1,0 +1,225 @@
+<html>
+<head>
+    <title>Guitar Tuner</title>
+    <link rel="stylesheet" href="tuner.css">
+    <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<script>
+//Initialise Strings for Standard Tuning
+//MIDI Standard tuning is 40, 45, 50, 55, 59, 64
+//Notes Standard tuning is E1, 45, 50, 55, 59, E3
+    // var tuning = [40, 45, 50, 55, 59, 64];
+    // var string1 = 40;
+    // var string2 = 45;
+    // var string3 = 50;
+    // var string4 = 55;
+    // var string5 = 59;
+    // var string6 = 64;
+
+    var string1 = 28;
+    var string2 = 33;
+    var string3 = 38;
+    var string4 = 43;
+    var string5 = 47;
+    var string6 = 52;
+
+    var string1FQ = 164.8;
+    var string2FQ = 220.0;
+    var string3FQ = 293.7;
+    var string4FQ = 392.0;
+    var string5FQ = 493.9;
+    var string6FQ = 659.3;
+
+    var useSynthesiser = false;
+</script>
+
+<div class="container margin-top-50">
+    <div class="row tuner-title">
+        <div class="col-xs-12">
+            <h1>Guitar Tuner</h1>
+            <button id="string1" class="tuner-button" onclick="playNote(string1);">E</button>
+            <button id="string2" class="tuner-button"  onclick="playNote(string2);">A</button>
+            <button id="string3" class="tuner-button"  onclick="playNote(string3);">D</button>
+            <button id="string4" class="tuner-button"  onclick="playNote(string4);">G</button>
+            <button id="string5" class="tuner-button"  onclick="playNote(string5);">B</button>
+            <button id="string6" class="tuner-button"  onclick="playNote(string6);">E</button>
+            <button id="strum" class="tuner-button"  onclick="strumTuning();">*</button>
+
+        </div>
+    </div>
+    <div class="row tuning-select">
+        <select id="tune-select" onchange="changeTuning()">
+            <option value="standard">       Standard | E A D G B E</option>
+            <option value="drop-d">         Drop D | D A D G B E</option>
+            <option value="drop-c">         Drop C | C G C F A D</option>
+            <option value="half-step-down"> Half Step Down | Eb Ab Db Gb Bb Eb</option>
+            <option value="open-c">         Open C | C G C G C E</option>
+        </select>
+    </div>
+    <p>
+        The guitar samples used in this tuner are just....not accurate, please
+        don't use them for pitch perfect accuracy!
+    </p>
+</div>
+
+
+<script src="notes.js"></script>
+<script src="tunings.js"></script>
+<script>
+//Synthesiser stuff
+// var context = new AudioContext()
+// function playSound(frequency){
+//     var oscillator = context.createOscillator()
+//     var gain = context.createGain()
+//     oscillator.frequency.value = frequency
+//     oscillator.type = 'triangle';
+//     oscillator.connect(gain)
+//     gain.connect(context.destination)
+//     oscillator.start(0)
+//     gain.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 3.5)
+// }
+
+function strumTuning(){
+    playNote(string1);
+    playNote(string2);
+    playNote(string3);
+    playNote(string4);
+    playNote(string5);
+    playNote(string6);
+}
+
+function playNote(note){
+    console.log(note);
+    switch(note){
+        case 24:
+            C1.play();
+            break;
+        case 25:
+            C1sharp.play();
+            break;
+        case 26:
+            D1.play();
+            break;
+        case 27:
+            D1sharp.play();
+            break;
+        case 28:
+            E1.play();
+            break;
+        case 29:
+            F1.play();
+            break;
+        case 30:
+            F1sharp.play();
+            break;
+        case 31:
+            G1.play();
+            break;
+        case 32:
+            G1sharp.play();
+            break;
+        case 33:
+            A1.play();
+            break;
+        case 34:
+            A1sharp.play();
+            break;
+        case 35:
+            B1.play();
+            break;
+        case 36:
+            C2.play();
+            break;
+        case 37:
+            C2sharp.play();
+            break;
+        case 38:
+            D2.play();
+            break;
+        case 39:
+            D2sharp.play();
+            break;
+        case 40:
+            E2.play();
+            break;
+        case 41:
+            F2.play();
+            break;
+        case 42:
+            F2sharp.play();
+            break;
+        case 43:
+            G2.play();
+            break;
+        case 44:
+            G2sharp.play();
+            break;
+        case 45:
+            A2.play();
+            break;
+        case 46:
+            A2sharp.play();
+            break;
+        case 47:
+            B2.play();
+            break;
+        case 48:
+            C3.play();
+            break;
+        case 49:
+            C3sharp.play();
+            break;
+        case 50:
+            D3.play();
+            break;
+        case 51:
+            D3sharp.play();
+            break;
+        case 52:
+            E3.play();
+            break;
+        case 53:
+            F3.play();
+            break;
+        case 54:
+            F3sharp.play();
+            break;
+        case 55:
+            G3.play();
+            break;
+        case 56:
+            G3sharp.play();
+            break;
+        case 57:
+            A3.play();
+            break;
+        case 58:
+            A3sharp.play();
+            break;
+        case 59:
+            B3.play();
+            break;
+        case 60:
+            C4.play();
+            break;
+        case 61:
+            C4sharp.play();
+            break;
+        case 62:
+            D4.play();
+            break;
+        case 63:
+            D4sharp.play();
+            break;
+        case 64:
+            E4.play();
+            break;
+    }
+}
+
+</script>
+
+</body>
+</html>
