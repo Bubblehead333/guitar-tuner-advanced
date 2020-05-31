@@ -58,16 +58,34 @@
             <option value="open-c">         Open C | C G C G C E</option>
         </select>
     </div>
-    <p>
-        The guitar samples used in this tuner are just....not accurate, please
-        don't use them for pitch perfect accuracy!
-    </p>
+    <div class="row">
+        <p>
+            The guitar samples used in this tuner are just....not accurate, please
+            don't use them for pitch perfect accuracy!
+        </p>
+    </div>
+    <div class="row tuner-chords">
+        <h1>Chords</h1>
+        <button class="chord" onclick="playChord(28, 35, 40, 44, 47, 52)">E Major</button>
+        <button class="chord" onclick="playChord(28, 35, 40, 43, 47, 52)">E Minor</button>
+        <button class="chord" onclick="playChord(0, 33, 40, 45, 49, 52)">A Major</button>
+        <button class="chord" onclick="playChord(0, 33, 40, 45, 48, 52)">A Minor</button>
+        <button class="chord" onclick="playChord(0, 0, 38, 45, 49, 54)">D Major</button>
+        <button class="chord" onclick="playChord(0, 0, 38, 45, 49, 53)">D Minor</button>
+
+
+        <button class="chord" onclick="playChord(30, 37, 42, 46, 49, 54)">F Major</button>
+        <button class="chord" onclick="playChord(29, 36, 41, 45, 48, 53)">F Minor</button>
+
+
+    </div>
 </div>
 
 
 <script src="notes.js"></script>
 <script src="tunings.js"></script>
 <script>
+
 //Synthesiser stuff
 // var context = new AudioContext()
 // function playSound(frequency){
@@ -81,6 +99,15 @@
 //     gain.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 3.5)
 // }
 
+function playChord(first, second, third, fourth, fifth, sixth){
+    playNote(first);
+    playNote(second);
+    playNote(third);
+    playNote(fourth);
+    playNote(fifth);
+    playNote(sixth);
+}
+
 function strumTuning(){
     playNote(string1);
     playNote(string2);
@@ -90,8 +117,9 @@ function strumTuning(){
     playNote(string6);
 }
 
+
 function playNote(note){
-    console.log(note);
+    stopNote();
     switch(note){
         case 24:
             C1.play();
@@ -217,6 +245,52 @@ function playNote(note){
             E4.play();
             break;
     }
+}
+
+
+function stopNote(){
+    C1.stop = true;
+    C1sharp.stop = true;
+    D1.stop = true;
+    D1sharp.stop = true;
+    E1.stop = true;
+    F1.stop = true;
+    F1sharp.stop = true;
+    G1.stop = true;
+    G1sharp.stop = true;
+    A1.stop = true;
+    A1sharp.stop = true;
+    B1.stop = true;
+    C2.stop = true;
+    C2sharp.stop = true;
+    D2.stop = true;
+    D2sharp.stop = true;
+    E2.stop = true;
+    F2.stop = true;
+    F2sharp.stop = true;
+    G2.stop = true;
+    G2sharp.stop = true;
+    A2.stop = true;
+    A2sharp.stop = true;
+    B2.stop = true;
+    C3.stop = true;
+    C3sharp.stop = true;
+    D3.stop = true;
+    D3sharp.stop = true;
+    E3.stop = true;
+    F3.stop = true;
+    F3sharp.stop = true;
+    G3.stop = true;
+    G3sharp.stop = true;
+    A3.stop = true;
+    A3sharp.stop = true;
+    B3.stop = true;
+    C4.stop = true;
+    C4sharp.stop = true;
+    D4.stop = true;
+    D4sharp.stop = true;
+    E4.stop = true;
+
 }
 
 </script>
