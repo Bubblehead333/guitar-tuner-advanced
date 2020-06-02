@@ -57,6 +57,13 @@ option{
     padding: 10px;
 }
 
+.stop-button{
+    /* border-radius: 10px; */
+    height: 30px;
+    width: 30px;
+    border: none;
+}
+
 .tuner-button {
     font-family: 'Rubik', sans-serif;
     background: black;

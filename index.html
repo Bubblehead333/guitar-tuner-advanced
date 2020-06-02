@@ -71,8 +71,9 @@
             </select>
             <label class="switch">
                 <input type="checkbox" checked onchange="toggleLooping();">
-                <span class="slider round">Loop</span>
+                <span class="slider round" title="This only works with guitar samples!">Loop</span>
             </label>
+            <button style="border: none;" onclick="stopGuitarNotes()"><img class="stop-button" title="Stop audio" src="stop-button.png"></button>
         </div>
     </div>
     <div class="tuner-block">
@@ -81,6 +82,9 @@
                 The guitar samples used in this version are not accurate!
                 If you want to use a sound that is the exact
                 frequency, use the synthesiser below.
+            </p>
+            <p class="notes">
+                The loop function is currently not available for the synthesiser.
             </p>
             <select id="oscillator-select" onchange="changeOscillatorType()">
                 <option value="sine">Sine</option>
@@ -282,6 +286,7 @@ function toggleLooping(){
         looping = true;
     } else {
         looping = false;
+        stopGuitarNotes();
     }
     console.log(looping);
 }
@@ -292,6 +297,7 @@ function playSingleNote(note){
 }
 
 function playChord(first, second, third, fourth, fifth, sixth){
+    stopGuitarNotes();
     playNote(first);
     playNote(second);
     playNote(third);
